@@ -65,6 +65,9 @@ namespace BrandConsoleApp.Util
             // password=...
 
             // and set the above static variables from this file
+
+
+
         }
 
     }

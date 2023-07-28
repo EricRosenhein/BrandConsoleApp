@@ -49,7 +49,7 @@ namespace BrandConsoleApp.Model
             }
         }
 
-        protected void constructPopulateQueryCommand(int idToUse, QC.SqlCommand command)
+        protected void ConstructPopulateQueryCommand(int idToUse, QC.SqlCommand command)
         {
             string query = "SELECT * FROM Brand WHERE (ID = " + idToUse + ");";
             command.CommandText = query;
@@ -65,7 +65,7 @@ namespace BrandConsoleApp.Model
                 command.Connection = connection;
                 command.CommandType = DT.CommandType.Text;
                 //command.CommandText = query;
-                constructPopulateQueryCommand(idToUse, command);
+                ConstructPopulateQueryCommand(idToUse, command);
 
                 QC.SqlDataReader reader = command.ExecuteReader();
 
@@ -175,8 +175,6 @@ namespace BrandConsoleApp.Model
             {
                 UpdateInDB(connection);
             }
-
-
         }
 
         public override string ToString()

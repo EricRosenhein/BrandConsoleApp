@@ -46,6 +46,7 @@ namespace BrandConsoleApp
 
             //----------------------------------------------------------------------------
 
+            /*
             string namePattern = "";
 
             Console.WriteLine("Please enter the brand name pattern string: ");
@@ -56,6 +57,19 @@ namespace BrandConsoleApp
 
 
             someBrandColl.PopulateViaName(namePattern);
+
+            Console.WriteLine("Result: " + someBrandColl); */
+
+            string notesPattern = "";
+
+            Console.WriteLine("Please enter the brand notes pattern string: ");
+            notesPattern = Console.ReadLine();
+
+
+            BrandCollection someBrandColl = new BrandCollection();
+
+
+            someBrandColl.PopulateViaNotes(notesPattern);
 
             Console.WriteLine("Result: " + someBrandColl);
 
