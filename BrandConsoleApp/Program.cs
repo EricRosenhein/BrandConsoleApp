@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using BrandConsoleApp.Model;
 using BrandConsoleApp.Util;
+using IniParser;
+using IniParser.Model;
 
 namespace BrandConsoleApp
 {
@@ -13,10 +15,13 @@ namespace BrandConsoleApp
     {
         public static void Main(string[] args)
         {
-            string serverName = @"DESKTOP-11E4P6O";
-            string dbName = "WorkShopInventory";
-            string loginName = @"DESKTOP-11E4P6O\emr19";
-            string pwdToUse = "";
+            var parser = new FileIniDataParser();
+            IniData data = parser.ReadFile("C:\\Users\\Sweet Baby Jay\\source\\repos\\BrandConsoleApp\\BrandConsoleApp\\DBConfig.ini");
+
+            string serverName = data["Server"]["ServerName"];
+            string dbName = data["Server"]["DBName"];
+            string loginName = data["Server"]["LoginName"];
+            string pwdToUse = data["Server"]["Password"];
 
 
 
