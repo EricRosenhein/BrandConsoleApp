@@ -7,27 +7,18 @@ using System.Threading.Tasks;
 using BrandConsoleApp.Model;
 using BrandConsoleApp.Util;
 
+
 namespace BrandConsoleApp
 {
     class Program
     {
         public static void Main(string[] args)
         {
-            string serverName = @"DESKTOP-11E4P6O";
-            string dbName = "WorkShopInventory";
-            string loginName = @"DESKTOP-11E4P6O\emr19";
-            string pwdToUse = "";
 
-
+            Utilities.EstablishConnection("C:\\Users\\emr19\\source\\repos\\BrandConsoleApp\\BrandConsoleApp\\dbConfig.ini");
 
             // REALLY IMPORTANT TO READ THIS FROM A FILE. Otherwise, stupid old teachers forget to do all this stuff
             // Us young and smart kids don't!
-
-            Utilities.SetServerName(serverName);
-            Utilities.SetDBName(dbName);
-            Utilities.SetLoginName(loginName);
-            Utilities.SetPassword(pwdToUse);
-            Utilities.SetConnectionString();
 
             Console.WriteLine("Testing Brand Console App");
 
@@ -46,6 +37,7 @@ namespace BrandConsoleApp
 
             //----------------------------------------------------------------------------
 
+            /*
             string namePattern = "";
 
             Console.WriteLine("Please enter the brand name pattern string: ");
@@ -56,6 +48,19 @@ namespace BrandConsoleApp
 
 
             someBrandColl.PopulateViaName(namePattern);
+
+            Console.WriteLine("Result: " + someBrandColl); */
+
+            string notesPattern = "";
+
+            Console.WriteLine("Please enter the brand notes pattern string: ");
+            notesPattern = Console.ReadLine();
+
+
+            BrandCollection someBrandColl = new BrandCollection();
+
+
+            someBrandColl.PopulateViaNotes(notesPattern);
 
             Console.WriteLine("Result: " + someBrandColl);
 
