@@ -13,11 +13,12 @@ namespace BrandConsoleApp.Model
 
         protected delegate void PopulateQueryMethodType(string val, QC.SqlCommand command);
 
-        protected PopulateQueryMethodType? QueryMethod;
+        protected PopulateQueryMethodType QueryMethod;
 
         public BrandCollection()
         {
             BrandList = new List<Brand>();
+            QueryMethod = QueryConstructorViaName;
         }
 
         // Fully helper methods
@@ -47,8 +48,7 @@ namespace BrandConsoleApp.Model
 
         protected override void ConstructPopulateQueryCommand(string val, QC.SqlCommand command)
         {
-            if (QueryMethod != null)
-             QueryMethod(val, command);
+            QueryMethod(val, command);
         }
 
         protected void QueryConstructorViaName(string namePart, QC.SqlCommand command)
