@@ -21,13 +21,13 @@ namespace BrandConsoleApp
             // REALLY IMPORTANT TO READ THIS FROM A FILE. Otherwise, stupid old teachers forget to do all this stuff
             // Us young and smart kids don't!
 
-            Console.WriteLine("Testing Brand Console App" +
-                "\n ----------------------------------------");
+            Console.WriteLine("Testing Brand Console App");
 
             int choice = 10;
             while (choice != 0)
             {
-                Console.WriteLine("Please enter the number corresonding to you desired action:" +
+                Console.WriteLine("\n ----------------------------------------");
+                Console.WriteLine("Please enter the number corresonding to your desired action:" +
                     "\n 1: Search brand by known id" +
                     "\n 2: Search brand by name pattern" +
                     "\n 3: Search brand by notes pattern" +
