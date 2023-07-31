@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BrandConsoleApp.Util
 {
-    public class Global
+    public class GlobalData
     {
 
     }

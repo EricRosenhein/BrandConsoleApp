@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using IniParser.Model;
+using IniParser;
 using System.Xml.Linq;
 
 namespace BrandConsoleApp.Util
@@ -56,7 +52,7 @@ namespace BrandConsoleApp.Util
             return ConnectionString;
         }
 
-        public static void GetConnectionInfoFromFile(string filePath)
+        public static void EstablishConnection(string filePath)
         {
             // Need to read the file which will have info like this
             // serverName=...
@@ -65,7 +61,17 @@ namespace BrandConsoleApp.Util
             // password=...
 
             // and set the above static variables from this file
-        }
 
+            var parser = new FileIniDataParser();
+            IniData data = parser.ReadFile(filePath);
+
+            SetServerName(data["Server"]["ServerName"]);
+            SetDBName(data["Server"]["DBName"]);
+            SetLoginName(data["Server"]["LoginName"]);
+            SetPassword(data["Server"]["Password"]);
+
+            SetConnectionString();
+
+        }
     }
 }

@@ -2,46 +2,27 @@
 using DT = System.Data;
 using QC = Microsoft.Data.SqlClient;
 using BrandConsoleApp.Util;
+using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
 
 namespace BrandConsoleApp.Model
 {
-    public class BrandCollection
+    public class BrandCollection : PersistableCollection
     {
         protected List<Brand> BrandList;
 
+        protected delegate void PopulateQueryMethodType(string val, QC.SqlCommand command);
+
+        protected PopulateQueryMethodType? QueryMethod;
 
         public BrandCollection()
         {
             BrandList = new List<Brand>();
         }
 
-
-
-        public void PopulateViaName(string namePart)
+        // Fully helper methods
+        protected override void ProcessPopulateQueryResult(QC.SqlDataReader reader)
         {
-
-            using (QC.SqlConnection connection = new QC.SqlConnection(Utilities.GetConnectionString()))
-            {
-                connection.Open();
-                PopulateViaName(namePart, connection);
-            }
-
-        }
-
-        public void PopulateViaNotes(string notesPart)
-        {
-            using (QC.SqlConnection connection = new QC.SqlConnection(Utilities.GetConnectionString()))
-            {
-                connection.Open();
-                PopulateViaNotes(notesPart, connection);
-            }
-        }
-
-        private void PopulateHelper(QC.SqlCommand command)
-        {
-
-            QC.SqlDataReader reader = command.ExecuteReader();
-
             while (reader.Read())
             {
                 int locID = reader.GetInt32(0);
@@ -49,66 +30,59 @@ namespace BrandConsoleApp.Model
                 string locNotes = reader.GetString(2);
                 BrandList.Add(new Brand(locID, locName, locNotes));
             }
-
-        }
-
-        private void PopulateViaName(string namePart, QC.SqlConnection connection)
-        {
-
-            // Taking a 'PreparedStatement' approach here, avoids SQL Injection  
-            // THIS IS IMPORTANT 
-            // NOT WORKING
-            QC.SqlParameter parameter;
-
-
-            using (QC.SqlCommand command = new QC.SqlCommand())
-            {
-                string query = @"SELECT * FROM Brand WHERE (Name LIKE CONCAT('%', @NP, '%'));";
-
-                // string query = "SELECT * FROM Brand WHERE (Name LIKE '%" + namePart +"%');"; // UNSAFE - ERIC LIKES UNSAFE FOR NOW, BUT FIX IT
-
-                command.Connection = connection;
-                command.CommandType = DT.CommandType.Text;
-                command.CommandText = query;
-
-                parameter = new QC.SqlParameter("@NP", DT.SqlDbType.NVarChar, 100);  // Fix Type and Length 
-                parameter.Value = namePart;
-                command.Parameters.Add(parameter);
-
-                Console.WriteLine(command.CommandText);
-
-                PopulateHelper(command);
-            }
         }
 
 
-
-        private void PopulateViaNotes(string notesPart, QC.SqlConnection connection)
+        public void PopulateViaName(string namePart)
         {
+            QueryMethod = new PopulateQueryMethodType(QueryConstructorViaName);
+            PopulateHelper(namePart);
+        }
 
-            // Taking a 'PreparedStatement' approach here, avoids SQL Injection  
-            // THIS IS IMPORTANT 
+        public void PopulateViaNotes(string notesPart)
+        {
+            QueryMethod = new PopulateQueryMethodType(QueryConstructorViaNotes);
+            PopulateHelper(notesPart);
+        }
+
+        protected override void ConstructPopulateQueryCommand(string val, QC.SqlCommand command)
+        {
+            if (QueryMethod != null)
+             QueryMethod(val, command);
+        }
+
+        protected void QueryConstructorViaName(string namePart, QC.SqlCommand command)
+        {
+          
 
             QC.SqlParameter parameter;
 
+            string query = @"SELECT * FROM Brand WHERE (Name LIKE CONCAT('%', @NP, '%'));";
 
-            using (QC.SqlCommand command = new QC.SqlCommand())
-            {
-                string query = @"SELECT * FROM Brand WHERE (Notes LIKE CONCAT('%', @NP, '%');";
+            // string query = "SELECT * FROM Brand WHERE (Name LIKE '%" + namePart +"%');"; // UNSAFE - ERIC LIKES UNSAFE FOR NOW, BUT FIX IT
 
-                command.Connection = connection;
-                command.CommandType = DT.CommandType.Text;
-                command.CommandText = query;
+            command.CommandText = query;
 
-                parameter = new QC.SqlParameter("@NP", DT.SqlDbType.NVarChar, 1000);  // Fix Type and Length 
-                parameter.Value = notesPart;
-                command.Parameters.Add(parameter);
-
-                PopulateHelper(command);
-            }
-
+            parameter = new QC.SqlParameter("@NP", DT.SqlDbType.NVarChar, 100);  // Fix Type and Length 
+            parameter.Value = namePart;
+            command.Parameters.Add(parameter);
         }
 
+
+        protected void QueryConstructorViaNotes(string notesPart, QC.SqlCommand command)
+        {
+            QC.SqlParameter parameter;
+
+            string query = @"SELECT * FROM Brand WHERE (Notes LIKE CONCAT('%', @NP, '%'));";
+
+            // string query = "SELECT * FROM Brand WHERE (Name LIKE '%" + namePart +"%');"; // UNSAFE - ERIC LIKES UNSAFE FOR NOW, BUT FIX IT
+
+            command.CommandText = query;
+
+            parameter = new QC.SqlParameter("@NP", DT.SqlDbType.NVarChar, 1000);  // Fix Type and Length 
+            parameter.Value = notesPart;
+            command.Parameters.Add(parameter);
+        }
 
 
         public override string ToString()
