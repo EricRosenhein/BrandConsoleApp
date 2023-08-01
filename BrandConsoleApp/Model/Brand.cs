@@ -47,8 +47,14 @@ namespace BrandConsoleApp.Model
 
         protected override void ConstructPopulateQueryCommand(string idToUse, QC.SqlCommand command)
         {
-            string query = "SELECT * FROM Brand WHERE (ID = " + idToUse + ");";
+            QC.SqlParameter parameter;
+
+            string query = @"SELECT * FROM Brand WHERE (ID = @NP);";
+
             command.CommandText = query;
+
+            parameter = new QC.SqlParameter("@NP", DT.SqlDbType.Int);
+            command.Parameters.Add(parameter);
 
         }
 
@@ -127,11 +133,32 @@ namespace BrandConsoleApp.Model
             }
         }
 
-        
-        public void Save(QC.SqlConnection connection)
+        protected override ResultMessage GetResultMessageForPopulate()
         {
+            ResultMessage mesg = new ResultMessage(ResultMessage.ResultMessageType.Success, "Brand with ID: " + this.ID + 
+                " retrieved successfully!");
+            return mesg;
+        }
 
-           
+        protected override ResultMessage GetResultMessageForSave()
+        {
+            ResultMessage mesg = new ResultMessage(ResultMessage.ResultMessageType.Success, "Brand with name: " + this.Name
+                    + " saved successfully into database!");
+            return mesg;
+        }
+
+        protected override ResultMessage GetErrorMessageForPopulate(Exception Ex)
+        {
+            ResultMessage mesg = new ResultMessage(ResultMessage.ResultMessageType.Error, "Error in retrieving Brand with ID: " + this.ID +
+                " from database!");
+            return mesg;
+        }
+
+        protected override ResultMessage GetErrorMessageForSave(Exception Ex)
+        {
+            ResultMessage mesg = new ResultMessage(ResultMessage.ResultMessageType.Error, "Error in saving Brand with Name: " + this.Name +
+                " into database!");
+            return mesg;
         }
 
         public override string ToString()

@@ -53,13 +53,9 @@ namespace BrandConsoleApp.Model
 
         protected void QueryConstructorViaName(string namePart, QC.SqlCommand command)
         {
-          
-
             QC.SqlParameter parameter;
 
             string query = @"SELECT * FROM Brand WHERE (Name LIKE CONCAT('%', @NP, '%'));";
-
-            // string query = "SELECT * FROM Brand WHERE (Name LIKE '%" + namePart +"%');"; // UNSAFE - ERIC LIKES UNSAFE FOR NOW, BUT FIX IT
 
             command.CommandText = query;
 
@@ -75,8 +71,6 @@ namespace BrandConsoleApp.Model
 
             string query = @"SELECT * FROM Brand WHERE (Notes LIKE CONCAT('%', @NP, '%'));";
 
-            // string query = "SELECT * FROM Brand WHERE (Name LIKE '%" + namePart +"%');"; // UNSAFE - ERIC LIKES UNSAFE FOR NOW, BUT FIX IT
-
             command.CommandText = query;
 
             parameter = new QC.SqlParameter("@NP", DT.SqlDbType.NVarChar, 1000);  // Fix Type and Length 
@@ -84,6 +78,29 @@ namespace BrandConsoleApp.Model
             command.Parameters.Add(parameter);
         }
 
+        protected override ResultMessage GetResultMessageForPopulate()
+        {
+            ResultMessage mesg = new ResultMessage(ResultMessage.ResultMessageType.Success, "Brand Collection "  +
+                " retrieved successfully!");
+            return mesg;
+        }
+
+        protected override ResultMessage GetResultMessageForSave()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override ResultMessage GetErrorMessageForPopulate(Exception Ex)
+        {
+            ResultMessage mesg = new ResultMessage(ResultMessage.ResultMessageType.Error, "Error in retrieving Brand Collection " +
+                " from database!");
+            return mesg;
+        }
+
+        protected override ResultMessage GetErrorMessageForSave(Exception Ex)
+        {
+            throw new NotSupportedException();
+        }
 
         public override string ToString()
         {

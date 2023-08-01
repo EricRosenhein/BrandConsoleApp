@@ -95,6 +95,8 @@ namespace BrandConsoleApp
                     Brand someBrand2 = new Brand(bName, bNotes);
 
                     someBrand2.Save();
+
+                    Console.WriteLine(someBrand2.RetrieveSaveMessage().Message);
                 }
                 else if (choice == 5)
                 {
@@ -115,6 +117,8 @@ namespace BrandConsoleApp
                     someBrand2.Populate(idToChange);
                     someBrand2.SetValues(bName, bNotes);
                     someBrand2.Save();
+
+                    Console.WriteLine(someBrand2.RetrieveSaveMessage().Message);
                 }
 
             }
