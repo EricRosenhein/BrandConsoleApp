@@ -51,7 +51,7 @@ namespace BrandConsoleApp.Model
             QueryMethod(val, command);
         }
 
-        protected void QueryConstructorViaName(string namePart, QC.SqlCommand command)
+        protected virtual void QueryConstructorViaName(string namePart, QC.SqlCommand command)
         {
             QC.SqlParameter parameter;
 
@@ -65,7 +65,7 @@ namespace BrandConsoleApp.Model
         }
 
 
-        protected void QueryConstructorViaNotes(string notesPart, QC.SqlCommand command)
+        protected virtual void QueryConstructorViaNotes(string notesPart, QC.SqlCommand command)
         {
             QC.SqlParameter parameter;
 
