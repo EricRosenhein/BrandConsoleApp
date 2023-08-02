@@ -106,5 +106,6 @@ namespace BrandConsoleApp.Model
         public ResultMessage RetrieveSaveMessage() { return saveMessage; }
 
         public ResultMessage RetrievePopulateMessage() { return populateMessage; }  
+
     }
 }

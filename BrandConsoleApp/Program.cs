@@ -35,6 +35,7 @@ namespace BrandConsoleApp
                     "\n 3: Search brand by notes pattern" +
                     "\n 4: Enter a new brand" +
                     "\n 5: Update an existing brand" +
+                    "\n 11: Enter a new User" +
                     "\n 0: Exit");
 
                 choice = Convert.ToInt32(Console.ReadLine());
@@ -123,7 +124,7 @@ namespace BrandConsoleApp
 
                     Console.WriteLine(someBrand2.RetrieveSaveMessage().Message);
                 }
-                else if (choice == 6)
+                else if (choice == 11)
                 {
                     string usName = "";
                     Console.WriteLine("Enter the username of a new User: ");
