@@ -30,7 +30,7 @@ namespace BrandConsoleApp.Model
             }
         }
 
-        protected override void QueryConstructorViaName(string namePart, QC.SqlCommand command)
+        protected override void QueryConstructorViaName(Dictionary<string,Object> dictNamePart, QC.SqlCommand command)
         {
             QC.SqlParameter parameter;
 
@@ -39,12 +39,12 @@ namespace BrandConsoleApp.Model
             command.CommandText = query;
 
             parameter = new QC.SqlParameter("@NP", DT.SqlDbType.NVarChar, 100);  // Fix Type and Length 
-            parameter.Value = namePart;
+            parameter.Value = dictNamePart["name"];
             command.Parameters.Add(parameter);
         }
 
 
-        protected override void QueryConstructorViaNotes(string notesPart, QC.SqlCommand command)
+        protected override void QueryConstructorViaNotes(Dictionary<string, Object> dictNotesPart, QC.SqlCommand command)
         {
             QC.SqlParameter parameter;
 
@@ -53,7 +53,7 @@ namespace BrandConsoleApp.Model
             command.CommandText = query;
 
             parameter = new QC.SqlParameter("@NP", DT.SqlDbType.NVarChar, 1000);  // Fix Type and Length 
-            parameter.Value = notesPart;
+            parameter.Value = dictNotesPart["notes"];
             command.Parameters.Add(parameter);
         }
 

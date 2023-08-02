@@ -64,7 +64,7 @@ namespace BrandConsoleApp.Model
         }
 
 
-        protected void PopulateHelper(string populateData)
+        protected void PopulateHelper(Dictionary<string, Object> populateData)
         {
             try
             {
@@ -95,7 +95,7 @@ namespace BrandConsoleApp.Model
             
         }
 
-        protected abstract void ConstructPopulateQueryCommand(string populateData, QC.SqlCommand command);
+        protected abstract void ConstructPopulateQueryCommand(Dictionary<string, Object> populateData, QC.SqlCommand command);
 
         protected abstract void ProcessPopulateQueryResult(QC.SqlDataReader reader);
 
