@@ -103,6 +103,7 @@ namespace BrandConsoleApp.Model
 
         protected abstract ResultMessage GetResultMessageForPopulate();
 
+        public abstract bool IsPopulated();
         public ResultMessage RetrieveSaveMessage() { return saveMessage; }
 
         public ResultMessage RetrievePopulateMessage() { return populateMessage; }  
