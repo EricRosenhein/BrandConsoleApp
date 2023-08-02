@@ -8,6 +8,7 @@ using DT = System.Data;
 using static Azure.Core.HttpHeader;
 using System.Xml.Linq;
 using Microsoft.Data.SqlClient;
+using System.Security.Cryptography;
 
 namespace BrandConsoleApp.Model
 {
@@ -28,13 +29,46 @@ namespace BrandConsoleApp.Model
         {
 
             userName = usName;
-            password = pwd;
+            password = Encrypt(pwd);
         }
 
         public void SetValues(string nm, string pwd)
         {
             userName = nm;
-            password = pwd;
+            password = Encrypt(pwd);
+        }
+
+        public void SetPasswordWithEncryptedValue(string encryptedPwd)
+        {
+            password = encryptedPwd;
+        }
+
+        protected string Encrypt(string rawData)
+        {
+            // Create a SHA256
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                // ComputeHash - returns byte array
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                // Convert byte array to a string
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
+
+        public bool checkIfPasswordsMatch(string providedPassword)
+        {
+            string encryptedProvidedPassword = Encrypt(providedPassword);
+            if (string.Equals(encryptedProvidedPassword, password))
+            {
+                return true;
+            }
+            return false;
         }
 
         public virtual void Populate(int idToUse)
@@ -67,6 +101,13 @@ namespace BrandConsoleApp.Model
                 userName = reader.GetString(1);
                 password = reader.GetString(2);
             }
+        }
+
+        public override bool IsPopulated()
+        {
+            if (this.ID == null) return false;
+            if (this.ID == 0) return false;
+            return true;
         }
 
         protected override void SetupCommandForInsert(QC.SqlCommand command)
@@ -152,14 +193,14 @@ namespace BrandConsoleApp.Model
 
         protected override ResultMessage GetErrorMessageForPopulate(Exception Ex)
         {
-            ResultMessage mesg = new ResultMessage(ResultMessage.ResultMessageType.Error, "Error in retrieving User with ID: " + this.userID +
+            ResultMessage mesg = new ResultMessage(ResultMessage.ResultMessageType.Error, "Error in retrieving User with ID: " + this.ID +
                 " from database!");
             return mesg;
         }
 
         protected override ResultMessage GetResultMessageForPopulate()
         {
-            ResultMessage mesg = new ResultMessage(ResultMessage.ResultMessageType.Success, "Authorized User with ID: " + this.userID +
+            ResultMessage mesg = new ResultMessage(ResultMessage.ResultMessageType.Success, "Authorized User with ID: " + this.ID +
                 " retrieved successfully!");
             return mesg;
         }

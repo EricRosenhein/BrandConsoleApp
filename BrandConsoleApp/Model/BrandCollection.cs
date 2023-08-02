@@ -105,12 +105,7 @@ namespace BrandConsoleApp.Model
         {
             throw new NotSupportedException();
         }
-        public override bool IsPopulated()
-        {
-            if (this.ID == null) return false;
-            if (this.ID == 0) return false;
-            return true;
-        }
+        
         public override string ToString()
         {
             string retVal = "";
