@@ -27,6 +27,7 @@ namespace BrandConsoleApp.Model
             parameter.Value = dictIdToUse["id"];
             command.Parameters.Add(parameter);
         }
+
         protected override void SetupCommandForInsert(QC.SqlCommand command)
         {
             // Taking a 'PreparedStatement' approach here, avoids SQL Injection  

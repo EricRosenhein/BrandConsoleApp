@@ -71,6 +71,13 @@ namespace BrandConsoleApp.Model
             }
         }
 
+        public override bool IsPopulated()
+        {
+            if (this.ID == null) return false;
+            if (this.ID == 0) return false;
+            return true;
+        }
+
         protected override void SetupCommandForInsert(QC.SqlCommand command)
         {
             // Taking a 'PreparedStatement' approach here, avoids SQL Injection  
