@@ -15,7 +15,7 @@ namespace BrandConsoleApp.Model
         public SpeciesWood() : base(){ }
         public SpeciesWood(int Id, string nm, string notes) : base(Id, nm, notes) { }
         public SpeciesWood(string nm, string notes) : base(nm, notes) { }
-        protected override void ConstructPopulateQueryCommand(string idToUse, QC.SqlCommand command)
+        protected override void ConstructPopulateQueryCommand(Dictionary<string, Object> dictIdToUse, QC.SqlCommand command)
         {
             QC.SqlParameter parameter;
 
@@ -24,7 +24,7 @@ namespace BrandConsoleApp.Model
             command.CommandText = query;
 
             parameter = new QC.SqlParameter("@NP", DT.SqlDbType.Int);
-            parameter.Value = idToUse;
+            parameter.Value = dictIdToUse["id"];
             command.Parameters.Add(parameter);
         }
         protected override void SetupCommandForInsert(QC.SqlCommand command)
