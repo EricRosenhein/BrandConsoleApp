@@ -20,7 +20,7 @@ namespace BrandConsoleApp.Model
         public LocationCollection()
         {
             LocationList = new List<Location>();
-            //QueryMethod = QueryContructorViaArea;
+            QueryMethod = QueryContructorViaArea;
         }
 
         protected override void ProcessPopulateQueryResult(SqlDataReader reader)
@@ -36,7 +36,7 @@ namespace BrandConsoleApp.Model
 
         public void PopulateViaArea(string areaPart)
         {
-           // QueryMethod = new PopulateQueryMethodType(QueryConstructorViaArea);
+            QueryMethod = new PopulateQueryMethodType(QueryConstructorViaArea);
             Dictionary<string, Object> d = new Dictionary<string, Object>();
             d["area"] = areaPart;
             PopulateHelper(d);
@@ -44,15 +44,17 @@ namespace BrandConsoleApp.Model
 
         public void PopulateViaAreaAndLocus(string areaPart, string locPart)
         {
-            //QueryMethod = new PopulateQueryMethodType(QueryConstructorViaAreaAndLocus);
+            QueryMethod = new PopulateQueryMethodType(QueryConstructorViaAreaAndLocus);
             Dictionary<string, Object> d = new Dictionary<string, Object>();
             d["locus"] = locPart;
             PopulateHelper(d);
         }
 
-        protected override ResultMessage GetErrorMessageForSave(Exception excep)
+        protected override ResultMessage GetResultMessageForPopulate()
         {
-            throw new NotImplementedException();
+            ResultMessage mesg = new ResultMessage(ResultMessage.ResultMessageType.Success, "Location with ID: " + this.ID +
+                " retrieved successfully!");
+            return mesg;
         }
 
         protected override ResultMessage GetResultMessageForSave()
@@ -60,19 +62,28 @@ namespace BrandConsoleApp.Model
             throw new NotImplementedException();
         }
 
-        protected override void ConstructPopulateQueryCommand(Dictionary<string, object> populateData, SqlCommand command)
+        protected override ResultMessage GetErrorMessageForPopulate(Exception Ex)
+        {
+            ResultMessage mesg = new ResultMessage(ResultMessage.ResultMessageType.Error, "Error in retrieving Location with ID: " + this.ID +
+                " from database!");
+            return mesg;
+        }
+
+        protected override ResultMessage GetErrorMessageForSave(Exception Ex)
         {
             throw new NotImplementedException();
         }
 
-        protected override ResultMessage GetErrorMessageForPopulate(Exception excep)
+        public override string ToString()
         {
-            throw new NotImplementedException();
+            string retVal = "";
+            for (int cnt = 0; cnt < LocationList.Count; cnt++)
+            {
+                retVal += LocationList[cnt].ToString();
+            }
+
+            return retVal;
         }
 
-        protected override ResultMessage GetResultMessageForPopulate()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
