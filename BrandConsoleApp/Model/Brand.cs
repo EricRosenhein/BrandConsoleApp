@@ -39,7 +39,7 @@ namespace BrandConsoleApp.Model
             Name = nm;
             Notes = nts;
         }
-        public void Populate(int idToUse)
+        public virtual void Populate(int idToUse)
         {
             string IDStr = idToUse + "";
             PopulateHelper(IDStr);

@@ -35,6 +35,8 @@ namespace BrandConsoleApp
                     "\n 3: Search brand by notes pattern" +
                     "\n 4: Enter a new brand" +
                     "\n 5: Update an existing brand" +
+                    "\n 6: Add a new Authorized User" +
+                    "\n 7: Update an existing Authorized User" +
                     "\n 0: Exit");
 
                 choice = Convert.ToInt32(Console.ReadLine());
@@ -119,6 +121,22 @@ namespace BrandConsoleApp
                     someBrand2.Save();
 
                     Console.WriteLine(someBrand2.RetrieveSaveMessage().Message);
+                }
+                else if (choice == 6)
+                {
+                    string usName = "";
+                    Console.WriteLine("Enter the username of a new User: ");
+                    usName = Console.ReadLine();
+
+                    string usPwd = "";
+                    Console.WriteLine("Enter the new password for this user: ");
+                    usPwd = Console.ReadLine();
+
+                    AuthorizedUser newUser = new AuthorizedUser(usName, usPwd);
+
+                    newUser.Save();
+
+                    Console.WriteLine(newUser.RetrieveSaveMessage().Message);
                 }
 
             }
