@@ -11,7 +11,7 @@ namespace BrandConsoleApp.Model
     {
         protected List<Brand> BrandList;
 
-        protected delegate void PopulateQueryMethodType(string val, QC.SqlCommand command);
+        protected delegate void PopulateQueryMethodType(Dictionary<string,Object> val, QC.SqlCommand command);
 
         protected PopulateQueryMethodType QueryMethod;
 
@@ -37,21 +37,25 @@ namespace BrandConsoleApp.Model
         public void PopulateViaName(string namePart)
         {
             QueryMethod = new PopulateQueryMethodType(QueryConstructorViaName);
-            PopulateHelper(namePart);
+            Dictionary<string,Object> d = new Dictionary<string,Object>();
+            d["name"] = namePart;
+            PopulateHelper(d);
         }
 
         public void PopulateViaNotes(string notesPart)
         {
             QueryMethod = new PopulateQueryMethodType(QueryConstructorViaNotes);
-            PopulateHelper(notesPart);
+            Dictionary<string,Object> d = new Dictionary<string,Object>();
+            d["notes"] = notesPart;
+            PopulateHelper(d);
         }
 
-        protected override void ConstructPopulateQueryCommand(string val, QC.SqlCommand command)
+        protected override void ConstructPopulateQueryCommand(Dictionary<string, Object> val, QC.SqlCommand command)
         {
             QueryMethod(val, command);
         }
 
-        protected void QueryConstructorViaName(string namePart, QC.SqlCommand command)
+        protected virtual void QueryConstructorViaName(Dictionary<string, Object> dictNamePart, QC.SqlCommand command)
         {
             QC.SqlParameter parameter;
 
@@ -60,12 +64,12 @@ namespace BrandConsoleApp.Model
             command.CommandText = query;
 
             parameter = new QC.SqlParameter("@NP", DT.SqlDbType.NVarChar, 100);  // Fix Type and Length 
-            parameter.Value = namePart;
+            parameter.Value = dictNamePart["name"];
             command.Parameters.Add(parameter);
         }
 
 
-        protected void QueryConstructorViaNotes(string notesPart, QC.SqlCommand command)
+        protected virtual void QueryConstructorViaNotes(Dictionary<string, Object> dictNotesPart, QC.SqlCommand command)
         {
             QC.SqlParameter parameter;
 
@@ -74,7 +78,7 @@ namespace BrandConsoleApp.Model
             command.CommandText = query;
 
             parameter = new QC.SqlParameter("@NP", DT.SqlDbType.NVarChar, 1000);  // Fix Type and Length 
-            parameter.Value = notesPart;
+            parameter.Value = dictNotesPart["notes"];
             command.Parameters.Add(parameter);
         }
 

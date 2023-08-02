@@ -25,7 +25,7 @@ namespace BrandConsoleApp
 
             Console.WriteLine("Testing Brand Console App");
 
-            int choice = 10;
+            int choice = -1;
             while (choice != 0)
             {
                 Console.WriteLine("\n ----------------------------------------");
@@ -35,12 +35,13 @@ namespace BrandConsoleApp
                     "\n 3: Search brand by notes pattern" +
                     "\n 4: Enter a new brand" +
                     "\n 5: Update an existing brand" +
-                    "\n 6: Add a new Authorized User" +
-                    "\n 7: Update an existing Authorized User" +
                     "\n 0: Exit");
 
                 choice = Convert.ToInt32(Console.ReadLine());
 
+
+
+                // ----------------START-----------BRAND-----------------------------------
                 if (choice == 1)
                 {
                     int idRead = 0;
@@ -139,6 +140,89 @@ namespace BrandConsoleApp
                     Console.WriteLine(newUser.RetrieveSaveMessage().Message);
                 }
 
+                // ----------------END-----------BRAND-----------------------------------
+                //-----------------START---------SPECIESWOOD-----------------------------
+                else if (choice == 6)
+                {
+                    int idRead = 0;
+
+                    Console.WriteLine("Please enter the id of an existing wood species you know: ");
+                    idRead = Convert.ToInt32(Console.ReadLine());
+
+                    SpeciesWood someSpecies = new SpeciesWood();
+
+                    someSpecies.Populate(idRead);
+
+                    Console.WriteLine("Result: Wood species: " + someSpecies);
+                }
+                else if (choice == 7)
+                {
+                    string namePattern = "";
+
+                    Console.WriteLine("Please enter the wood species name pattern string: ");
+                    namePattern = Console.ReadLine();
+
+
+                    SpeciesWoodCollection someSpeciesColl = new SpeciesWoodCollection();
+
+
+                    someSpeciesColl.PopulateViaName(namePattern);
+
+                    Console.WriteLine("Result: " + someSpeciesColl);
+                }
+                else if (choice == 8)
+                {
+                    string notesPattern = "";
+
+                    Console.WriteLine("Please enter the wood species notes pattern string: ");
+                    notesPattern = Console.ReadLine();
+
+
+                    SpeciesWoodCollection someSpeciesColl = new SpeciesWoodCollection();
+
+
+                    someSpeciesColl.PopulateViaNotes(notesPattern);
+
+                    Console.WriteLine("Result: " + someSpeciesColl);
+                }
+                else if (choice == 9)
+                {
+                    string bName = "";
+                    Console.WriteLine("Enter the name of a new wood species: ");
+                    bName = Console.ReadLine();
+
+                    string bNotes = "";
+                    Console.WriteLine("Enter the notes for this wood species: ");
+                    bNotes = Console.ReadLine();
+
+                    SpeciesWood someSpecies2 = new SpeciesWood(bName, bNotes);
+
+                    someSpecies2.Save();
+
+                    Console.WriteLine(someSpecies2.RetrieveSaveMessage().Message);
+                }
+                else if (choice == 10)
+                {
+                    Console.Write("Enter the ID of the wood species to update: ");
+                    int idToChange = Convert.ToInt32(Console.ReadLine());
+
+                    string bName = "";
+                    Console.WriteLine("Enter the new name of the wood species: ");
+                    bName = Console.ReadLine();
+
+                    string bNotes = "";
+                    Console.WriteLine("Enter the new notes for this wood species: ");
+                    bNotes = Console.ReadLine();
+
+                    SpeciesWood someSpecies2 = new SpeciesWood();
+
+
+                    someSpecies2.Populate(idToChange);
+                    someSpecies2.SetValues(bName, bNotes);
+                    someSpecies2.Save();
+
+                    Console.WriteLine(someSpecies2.RetrieveSaveMessage().Message);
+                }
             }
         }
     }

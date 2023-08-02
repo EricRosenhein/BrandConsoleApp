@@ -42,10 +42,12 @@ namespace BrandConsoleApp.Model
         public virtual void Populate(int idToUse)
         {
             string IDStr = idToUse + "";
-            PopulateHelper(IDStr);
+            Dictionary<string, Object> d = new Dictionary<string, Object>();
+            d["id"] = IDStr;
+            PopulateHelper(d);
         }
 
-        protected override void ConstructPopulateQueryCommand(string idToUse, QC.SqlCommand command)
+        protected override void ConstructPopulateQueryCommand(Dictionary<string,Object>  dictIdToUse, QC.SqlCommand command)
         {
             QC.SqlParameter parameter;
 
@@ -54,6 +56,7 @@ namespace BrandConsoleApp.Model
             command.CommandText = query;
 
             parameter = new QC.SqlParameter("@NP", DT.SqlDbType.Int);
+            parameter.Value = dictIdToUse["id"];
             command.Parameters.Add(parameter);
 
         }
