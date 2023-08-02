@@ -17,6 +17,8 @@ namespace BrandConsoleApp.Model
             return false;
         }
 
+        public override bool IsPopulated()
+        { return true; }
         protected override void SetupCommandForInsert(QC.SqlCommand command) { }
 
         protected override void SetupCommandForUpdate(QC.SqlCommand command) { }
