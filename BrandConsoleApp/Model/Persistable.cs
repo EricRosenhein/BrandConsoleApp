@@ -57,7 +57,7 @@ namespace BrandConsoleApp.Model
                 }
             }
             catch (Exception Ex) {
-
+                // Call to logging facility to log exception - record source info (class, method), date and time, log message
                 saveMessage = GetErrorMessageForSave(Ex);
             }
             
@@ -90,6 +90,7 @@ namespace BrandConsoleApp.Model
             }
             catch (Exception Ex)
             {
+                // Call to logging facility to log exception - record source info (class, method), date and time, log message
                 populateMessage = GetErrorMessageForPopulate(Ex);
             }
             
