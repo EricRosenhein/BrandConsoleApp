@@ -13,9 +13,10 @@ namespace BrandConsoleApp.Model
         public override void Save() {}
 
         protected override bool IsNewObject()
-        {
-            return false;
-        }
+        { return false; }
+
+        public override bool IsPopulated()
+        { return true; }
 
         protected override void SetupCommandForInsert(QC.SqlCommand command) { }
 
