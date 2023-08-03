@@ -42,9 +42,14 @@ namespace BrandConsoleApp
                     "\n 10: Update an existing wood species" +
                     "\n 11: Search location by known id" +
                     "\n 12: Search location by area pattern" +
-                    "\n 13: Search location by area and locus pattern"  +         //DEBUG THIS ONE
+                    "\n 13: Search location by area and locus pattern" +         //DEBUG THIS ONE -- IT IS FINE, VOUS VOUS AVEZ TROMPE
                     "\n 14: Enter a new location" +
                     "\n 15: Update an existing location" +
+                    "\n 16: Add an authorized user" +
+                    "\n 17: Retrieve an existing authorized user" +
+                    "\n 18: Check for login" +
+                    "\n 19: Update password for authorized user" +
+                    "\n 20: Login and Enter a new Brand - v1" +
                     "\n 0: Exit");
 
                 choice = Convert.ToInt32(Console.ReadLine());
@@ -257,9 +262,7 @@ namespace BrandConsoleApp
                     Console.WriteLine("Please enter the locus string: ");
                     locPattern = Console.ReadLine();
 
-
                     LocationCollection someLocationColl = new LocationCollection();
-
 
                     someLocationColl.PopulateViaAreaAndLocus(areaPattern, locPattern);
 
@@ -304,8 +307,108 @@ namespace BrandConsoleApp
                     Console.WriteLine(someLocation2.RetrieveSaveMessage().Message);
                 }
                 // ----------------END-----------LOCATION----------------------------
+                else if (choice == 16)
+                {
+                    string username = "";
+                    string password = "";
+
+                    Console.WriteLine("Please enter the user name: ");
+                    username = Console.ReadLine();
+                    Console.WriteLine("Please enter the password: ");
+                    password = Console.ReadLine();
+
+                    AuthorizedUser someUser = new AuthorizedUser(username, password);
+
+                    someUser.Save();
+
+                    Console.WriteLine(someUser.RetrieveSaveMessage().Message);
+                }
+                else if (choice == 17)
+                {
+                    string username = "";
 
 
+                    Console.WriteLine("Please enter the user name of the authorized user to retrieve: ");
+                    username = Console.ReadLine();
+
+                    AuthorizedUser someUser = new AuthorizedUser();
+
+                    someUser.Populate(username);
+
+                    Console.WriteLine("Result: " + someUser);
+                }
+                else if (choice == 18)
+                {
+                    string username = "";
+                    string password = "";
+
+                    Console.WriteLine("Please enter the user name of user who wishes to login: ");
+                    username = Console.ReadLine();
+
+                    AuthorizedUser someUser = new AuthorizedUser();
+
+                    someUser.Populate(username);
+
+                    Console.WriteLine("Result: " + someUser);
+
+                    if (someUser.IsPopulated())
+                    {
+                        Console.WriteLine(" You exist! Enter your password: ");
+                        password = Console.ReadLine();
+
+                        if (someUser.CheckIfPasswordsMatch(password))
+                        {
+                            Console.WriteLine(" Passwords match: login successful! ");
+                        }
+                        else
+                        {
+                            Console.WriteLine(" Password don't match: you are an intruder - get out!");
+                        }
+
+                    }
+                }
+                else if (choice == 19)
+                {
+                    string username = "";
+                    string password = "";
+
+                    Console.WriteLine("Please enter the user name of user you wish to find: ");
+                    username = Console.ReadLine();
+
+                    AuthorizedUser someUser = new AuthorizedUser();
+
+                    someUser.Populate(username);
+
+                    Console.WriteLine("Result: " + someUser);
+
+                    if (someUser.IsPopulated())
+                    {
+                        Console.WriteLine(" You exist! Enter your old password: ");
+                        password = Console.ReadLine();
+
+                        if (someUser.CheckIfPasswordsMatch(password))
+                        {
+                            Console.WriteLine(" Passwords match: enter your new password! ");
+                            password = Console.ReadLine();
+
+                            someUser.SetPasswordWithPlainText(password);
+
+                            someUser.Save();
+
+                            Console.WriteLine(someUser.RetrieveSaveMessage().Message);
+                        }
+                        else
+                        {
+                            Console.WriteLine(" Password don't match: you are an intruder - get out!");
+                        }
+
+                    }
+                }
+                else if (choice == 20)
+                {
+                    AddBrandTransaction Abt = new AddBrandTransaction();
+                    Abt.Execute();
+                }
             }
         }
     }
