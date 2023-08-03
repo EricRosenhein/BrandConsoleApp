@@ -89,7 +89,7 @@ namespace BrandConsoleApp.Model
 
             command.CommandText = insertQuery;
 
-            parameter = new QC.SqlParameter("@Area", DT.SqlDbType.NVarChar, 10);  // Fix Type and Length 
+            parameter = new QC.SqlParameter("@Area", DT.SqlDbType.NVarChar, 25);  // Fix Type and Length 
             parameter.Value = Area;
             command.Parameters.Add(parameter);
 
@@ -109,12 +109,12 @@ namespace BrandConsoleApp.Model
             QC.SqlParameter parameter;
 
             string updateQuery = "UPDATE Location" +
-               " SET Name = @Area, Notes = @Locus " +
+               " SET Area = @Area, Locus = @Locus " +
                " WHERE (ID = @Id);";
 
             command.CommandText = updateQuery;
 
-            parameter = new QC.SqlParameter("@Area", DT.SqlDbType.NVarChar, 10);  // Fix Type and Length 
+            parameter = new QC.SqlParameter("@Area", DT.SqlDbType.NVarChar, 25);  // Fix Type and Length 
             parameter.Value = Area;
             command.Parameters.Add(parameter);
 
@@ -162,14 +162,14 @@ namespace BrandConsoleApp.Model
 
         protected override ResultMessage GetErrorMessageForSave(Exception Ex)
         {
-            ResultMessage mesg = new ResultMessage(ResultMessage.ResultMessageType.Error, "Error in saving Location with Area and Locus: " + this.Area + this.Locus +
-                " into database!") ;
+            ResultMessage mesg = new ResultMessage(ResultMessage.ResultMessageType.Error, "Error in saving Location with Area and Locus: " + this.Area + "; " + this.Locus +
+                " into database!" + Ex.ToString()) ;
             return mesg;
         }
 
         public override string ToString()
         {
-            return "ID: " + ID + "; Name: " + Area + "; Notes: " + Locus;
+            return "ID: " + ID + "; Name: " + Area + "; Notes: " + Locus + " ";
         }
 
     }

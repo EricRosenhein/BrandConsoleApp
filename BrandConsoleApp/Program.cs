@@ -38,6 +38,11 @@ namespace BrandConsoleApp
                     "\n 8: Search wood species by notes pattern" +
                     "\n 9: Enter a new wood species" +
                     "\n 10: Update an existing wood species" +
+                    "\n 11: Search location by known id" +
+                    "\n 12: Search location by area pattern" +
+                    "\n 13: Search location by area and locus pattern"  +         //DEBUG THIS ONE
+                    "\n 14: Enter a new location" +
+                    "\n 15: Update an existing location" +
                     "\n 0: Exit");
 
                 choice = Convert.ToInt32(Console.ReadLine());
@@ -210,6 +215,95 @@ namespace BrandConsoleApp
 
                     Console.WriteLine(someSpecies2.RetrieveSaveMessage().Message);
                 }
+                // ----------------END-----------SPECIESWOOD----------------------------
+                // ----------------START---------LOCATION-------------------------------
+                else if (choice == 11)
+                {
+                    int idRead = 0;
+
+                    Console.WriteLine("Please enter the id of an existing location you know: ");
+                    idRead = Convert.ToInt32(Console.ReadLine());
+
+                    Location someLocation = new Location();
+
+                    someLocation.Populate(idRead);
+
+                    Console.WriteLine("Result: Location: " + someLocation);
+                }
+                else if (choice == 12)
+                {
+                    string areaPattern = "";
+
+                    Console.WriteLine("Please enter the area pattern string: ");
+                    areaPattern = Console.ReadLine();
+
+
+                    LocationCollection someLocationColl = new LocationCollection();
+
+
+                    someLocationColl.PopulateViaArea(areaPattern);
+
+                    Console.WriteLine("Result: " + someLocationColl);
+                }
+                else if (choice == 13)
+                {
+                    string areaPattern = "";
+                    string locPattern = "";
+
+                    Console.WriteLine("Please enter the area string: ");
+                    areaPattern = Console.ReadLine();
+                    Console.WriteLine("Please enter the locus string: ");
+                    locPattern = Console.ReadLine();
+
+
+                    LocationCollection someLocationColl = new LocationCollection();
+
+
+                    someLocationColl.PopulateViaAreaAndLocus(areaPattern, locPattern);
+
+                    Console.WriteLine("Result: " + someLocationColl);
+                }
+                else if (choice == 14)
+                {
+                    string bArea = "";
+                    Console.WriteLine("Enter the area of a new location: ");
+                    bArea = Console.ReadLine();
+
+                    string bLocus = "";
+                    Console.WriteLine("Enter a locus of the new area: ");
+                    bLocus = Console.ReadLine();
+
+                    Location someLocation2 = new Location(bArea, bLocus);
+
+                    someLocation2.Save();
+
+                    Console.WriteLine(someLocation2.RetrieveSaveMessage().Message);
+                }
+                else if (choice == 15)
+                {
+                    Console.Write("Enter the ID of the location to update: ");
+                    int idToChange = Convert.ToInt32(Console.ReadLine());
+
+                    string bArea = "";
+                    Console.WriteLine("Enter the new area of the location: ");
+                    bArea = Console.ReadLine();
+
+                    string bLocus = "";
+                    Console.WriteLine("Enter a new locus of the area: ");
+                    bLocus = Console.ReadLine();
+
+                    Location someLocation2 = new Location();
+
+
+                    someLocation2.Populate(idToChange);
+                    someLocation2.SetValues(bArea, bLocus);
+                    someLocation2.Save();
+
+                    Console.WriteLine(someLocation2.RetrieveSaveMessage().Message);
+                }
+                // ----------------END-----------LOCATION----------------------------
+
+
             }
         }
     }
