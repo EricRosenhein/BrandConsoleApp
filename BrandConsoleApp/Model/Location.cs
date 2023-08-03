@@ -169,7 +169,8 @@ namespace BrandConsoleApp.Model
 
         public override string ToString()
         {
-            return "ID: " + ID + "; Name: " + Area + "; Notes: " + Locus + " ";
+            return "ID: " + ID + "; Area: " + 
+                Area + "; Locus: " + Locus + " ";
         }
 
     }
