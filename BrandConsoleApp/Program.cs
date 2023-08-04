@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using BrandConsoleApp.Model;
+using BrandConsoleApp.Controller;
 using BrandConsoleApp.Util;
 using IniParser;
 using IniParser.Model;
@@ -14,9 +15,33 @@ namespace BrandConsoleApp
 {
     class Program
     {
+        internal class StateInfoClass: ICallback
+        {
+            public Dictionary<string, object> _currentStateInfo = new Dictionary<string, object>();
+
+            public StateInfoClass() { _currentStateInfo = new Dictionary<string, object>();  }
+
+            public void OnCallback(string key, Dictionary<string, object> value)
+            {
+                if ((key.Equals("LoginSuccess")) || (key.Equals("LoginFailed")))
+                {
+                    Console.WriteLine(value["Message"].ToString());
+                    _currentStateInfo = value;
+                }
+                else if ((key.Equals("AddBrandSuccess")) || (key.Equals("AddBrandFailed")))
+                {
+                    Console.WriteLine(value["Message"].ToString());
+                    _currentStateInfo = value;
+                }
+
+            }
+        }
+       
+
         public static void Main(string[] args)
         {
 
+            StateInfoClass stateInfo = new StateInfoClass();
 
             Utilities.EstablishConnection("C:\\Users\\emr19\\source\\repos\\BrandConsoleApp\\BrandConsoleApp\\dbConfig.ini");
 
@@ -42,7 +67,7 @@ namespace BrandConsoleApp
                     "\n 10: Update an existing wood species" +
                     "\n 11: Search location by known id" +
                     "\n 12: Search location by area pattern" +
-                    "\n 13: Search location by area and locus pattern" +         //DEBUG THIS ONE -- IT IS FINE, VOUS VOUS AVEZ TROMPE
+                    "\n 13: Search location by area and locus pattern" +         //DEBUG THIS ONE -- IT IS FINE, VOUS VOUS ETES TROMPE
                     "\n 14: Enter a new location" +
                     "\n 15: Update an existing location" +
                     "\n 16: Add an authorized user" +
@@ -50,6 +75,8 @@ namespace BrandConsoleApp
                     "\n 18: Check for login" +
                     "\n 19: Update password for authorized user" +
                     "\n 20: Login and Enter a new Brand - v1" +
+                    "\n 21: Login - v2" +
+                    "\n 22: Enter New Brand - v2" +
                     "\n 0: Exit");
 
                 choice = Convert.ToInt32(Console.ReadLine());
@@ -409,7 +436,36 @@ namespace BrandConsoleApp
                     AddBrandTransaction Abt = new AddBrandTransaction();
                     Abt.Execute();
                 }
+                else if (choice == 21)
+                {
+                    string username = "";
+                    string password = "";
+
+                    Console.WriteLine("Please enter the user name of user who wishes to login: ");
+                    username = Console.ReadLine();
+
+                    Console.WriteLine(" Please enter the password of the user who wishes to login: ");
+                    password = Console.ReadLine();
+
+                    LoginController lc = new LoginController(stateInfo);
+                    lc.Execute(stateInfo._currentStateInfo, username, password);
+
+                }
+                else if (choice == 22)
+                {
+                    string bName = "";
+                    Console.WriteLine("Enter the name of a new brand: ");
+                    bName = Console.ReadLine();
+
+                    string bNotes = "";
+                    Console.WriteLine("Enter the notes for this brand: ");
+                    bNotes = Console.ReadLine(); ;
+
+                    AddBrandController abc = new AddBrandController(stateInfo);
+                    abc.Execute(stateInfo._currentStateInfo, bName, bNotes);
+                }
             }
         }
+
     }
 }
