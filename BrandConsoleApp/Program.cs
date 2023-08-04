@@ -18,7 +18,7 @@ namespace BrandConsoleApp
         {
 
 
-            Utilities.EstablishConnection("C:\\Users\\emr19\\source\\repos\\BrandConsoleApp\\BrandConsoleApp\\dbConfig.ini");
+            Utilities.EstablishConnection("C:\\Users\\Sweet Baby Jay\\source\\repos\\BrandConsoleApp\\BrandConsoleApp\\DBConfig.ini");
 
             // REALLY IMPORTANT TO READ THIS FROM A FILE. Otherwise, stupid old teachers forget to do all this stuff
             // Us young and smart kids don't!
